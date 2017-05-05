@@ -31,14 +31,19 @@ socket.setdefaulttimeout(0.07)
 # Error handling for catching errors
 
 try:
+	count = 0
+	openPorts = []
 	for port in range(portStart, portEnd + 1):  
 		sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		result = sock.connect_ex((remoteServerIP, port))
 		if result == 0:
 			print "Port {}: 	 Open".format(port)
+			count += 1
+			openPorts.append(port)
 		else:
 			print "Port {}:		 Closed".format(port)
 		sock.close()
+	
 
 except KeyboardInterrupt:
     print "You pressed Ctrl+C"
@@ -60,3 +65,9 @@ total =  t2 - t1
 
 # Printing the information to screen
 print 'Scanning Completed in: ', total
+print "\nPortscan found %s open ports between %s and %s" % (count, portStart, portEnd)
+if count != 0:
+	print "\nOpen ports:\n "
+	for word in openPorts:
+		print word
+	
